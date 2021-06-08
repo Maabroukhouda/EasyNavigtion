@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Inscription
+			{% endblock %}
+		</title>
+		{% block stylesheets %}
+			<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+		{% endblock %}
+		{% block javascripts %}
+			<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
+			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
+		{% endblock %}
+
+
+	</head>
+	<body>
+		{% block body %}
+			<div class="container">
+				<div class="row mt-5">
+					<div class="col-lg-1"></div>
+					<div class="col-lg-4">
+						<div class="row gx-4 ">
+							<h3 class="fw-normal  link-danger mt-5 mb_1">Inscription</h3>
+							<br>
+							<p class="text-muted">
+								<a class="text-muted" data-bs-toggle="collapse" href="#simpleUserForm" role="button" aria-expanded="false" aria-controls="simpleUserForm">Client </a> ou
+								<a class="text-muted" data-bs-toggle="collapse" href="#fourniseurForm" role="button" aria-expanded="false" aria-controls="fourniseurForm">Fournisseur</a>
+
+							</p>
+							<div class="show" id="simpleUserForm">
+
+								{{ form_start(formInscri) }}
+								<div class="row">
+									<div class="col">
+										<p>
+											<small class="text-danger">{{ form_errors(formInscri.nomUser) }}</small>
+										</p>
+										<div class="col">{{form_widget(formInscri.nomUser)}}</div>
+									</div>
+									<div class="col">
+										<p>
+											<small class="text-danger">{{ form_errors(formInscri.Username) }}</small>
+										</p>
+										<div class="col">{{form_widget(formInscri.Username)}}</div>
+									</div>
+								</div>
+								<div class="row">
+									<p>
+										<small class="text-danger">{{ form_errors(formInscri.genre) }}</small>
+									</p>
+									<div class="col-3">
+										<p class="form-label">Genre</p>
+									</div>
+									<div class="col-6">{{form_widget(formInscri.genre)}}
+									</div>
+
+								</div>
+								<div class="row">
+									<p>
+										<small class="text-danger">{{ form_errors(formInscri.dataNaissance) }}</small>
+									</p>
+									<div class="col-6">
+										<p class="form-label">Date de Naissance</p>
+									</div>
+									<div class="col-6">{{form_widget(formInscri.dataNaissance)}}
+									</div>
+
+								</div>
+								<div class="row mb-3">
+									<p>
+										<small class="text-danger">{{ form_errors(formInscri.ville) }}</small>
+									</p>
+									<div class="col-3">
+										<p class="form-label">Ville</p>
+									</div>
+									<div class="col-9">{{form_widget(formInscri.ville)}}
+									</div>
+
+								</div>
+
+								<div class="col">
+
+									<div class="mb-3">
+										<small class="text-danger">{{ form_errors(formInscri.Email) }}</small>
+										{{form_widget(formInscri.Email)}}
+									</div>
+
+									<div class="mb-3">
+										<p>
+											<small class="text-danger">{{ form_errors(formInscri.Password) }}</small>
+										</p>
+										{{form_widget(formInscri.Password)}}</div>
+									<div class="mb-3">{{form_widget(formInscri.CofirmePassword)}}</div>
+
+									<div class="text-center">
+										<button class="btn btn-lg btn-danger" type="submit">
+											Inscription
+										</button>
+									</div>
+								</div>
+								{{ form_end(formInscri) }}
+							</div>
+						</div>
+						<div class="collapse" id="fourniseurForm">
+							{{ form_start(formFournisseur) }}
+							<div class="row mb-3">
+								<div class="col">
+									<p>
+										<small class="text-danger">{{ form_errors(formFournisseur.nomUser) }}</small>
+									</p>
+									<div class="col">{{form_widget(formFournisseur.nomUser)}}</div>
+								</div>
+								<div class="col">
+									<p>
+										<small class="text-danger">{{ form_errors(formFournisseur.Username) }}</small>
+									</p>
+									<div class="col">{{form_widget(formFournisseur.Username)}}</div>
+								</div>
+
+							</div>
+							<div class="col">
+								<p>
+									<small class="text-danger">{{ form_errors(formFournisseur.cin) }}</small>
+								</p>
+								<div class="mb-3">{{form_widget(formFournisseur.cin)}}</div>
+
+								<div class="mb-3">
+									<p>
+										<small class="text-danger">{{ form_errors(formFournisseur.numTel) }}</small>
+									</p>
+									{{form_widget(formFournisseur.numTel)}}</div>
+
+								<div class="mb-3">
+									<small class="text-danger">{{ form_errors(formFournisseur.Email) }}</small>
+									{{form_widget(formFournisseur.Email)}}</div>
+
+								<div class="mb-3">
+									<p>
+										<small class="text-danger">{{ form_errors(formFournisseur.Password) }}</small>
+									</p>
+									{{form_widget(formFournisseur.Password)}}</div>
+
+								<div class="text-center mb-4">
+									<button class="btn btn-lg btn btn-danger" type="submit">
+										Inscription
+									</button>
+								</div>
+							</div>
+							{{ form_end(formFournisseur) }}
+
+						</div>
+
+
+					</div>
+					<div class="col-lg-2"></div>
+
+					<div class="col-lg-5 mt-5">
+						<img src="img/img.png"><br>
+						<div class="text-center col-9 mb-3">
+							<a href="{{path('security_login')}}" class="text-muted">j'ai deja un compte</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% endblock %}
+
+	</body>
+</html>

@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="col-lg-1"></div>
+	<div class="col-lg-5">
+		<h3 class="fw-normal  link-danger mt-5">Inscription</h3>
+		<br>
+		{{ form_start(formFournisseur) }}
+		{{ form_end(formFournisseur) }}
+		{{ form_start(formInscri) }}
+		<div class="col">
+			<p>
+				<small class="text-danger">{{ form_errors(formInscri.nomUser) }}</small>
+			</p>
+			<div class="col">{{form_widget(formInscri.nomUser)}}</div>
+			<p>
+				<small class="text-danger">{{ form_errors(formInscri.Username) }}</small>
+			</p>
+			<div class="col">{{form_widget(formInscri.Username)}}</div>
+
+			<p>
+				<small class="text-danger">{{ form_errors(formInscri.Email) }}</small>
+			</p>
+			<div class="mb-3">{{form_widget(formInscri.Email)}}</div>
+			<p>
+				<small class="text-danger">{{ form_errors(formInscri.Password) }}</small>
+			</p>
+			<div class="mb-3">{{form_widget(formInscri.Password)}}</div>
+			<div class="mb-3">{{form_widget(formInscri.CofirmePassword)}}</div>
+			<p>
+				<small class="text-danger">{{ form_errors(formInscri.dataNaissance) }}</small>
+			</p>
+			<div class="col">{{form_widget(formInscri.dataNaissance)}}</div>
+
+
+			<br>
+			<div class="text-center">
+				<button type="submit" class="btn btn-danger">
+					Inscription
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-1"></div>
+	<div class="col-lg-5">
+		<img src="img/velo.png"><br>
+		<div class="text-center">
+			<a href="{{path('security_login')}}" class="text-muted">j'ai deja un compte</a>
+		</div>
+	</div>
+{% endblock %}
+
+
+<p>
+	<a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+		Link with href
+	</a>
+	<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+		Button with data-bs-target
+	</button>
+</p>
+
+
+<p>
+	<a class="btn btn-primary" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Toggle first element</a>
+	<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Toggle second element</button>
+	<button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Toggle both elements</button>
+</p>

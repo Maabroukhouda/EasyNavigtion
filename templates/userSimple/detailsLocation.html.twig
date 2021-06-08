@@ -1,0 +1,49 @@
+{% extends 'baseS.html.twig' %}
+{% block title %}Details Organiser
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div class="row mt-4">
+			<div class="col">
+				<div class="card" style="width: 35rem;">
+					<div class="card-body">
+						<h5 class="card-title">{{moyenne_tarnsport.nom}}</h5>
+						<h6 class="card-subtitle mb-2 text-muted">Offre Location</h6>
+						<div id="map" style="height: 300px ; width:500px" ></div>
+						<p class="card-text">Prix: {{offre.prix}} dinar</p>
+						<p class="card-text">Numero Telephone: {{contact}}</p>
+						<p class="card-text">Pour {{offre.nbplace}} personne</p>
+						<p class="card-text">Description: {{moyenne_tarnsport.description}}</p>
+						<input type="hidden" id="point"  value="{{parcs.location}}" />
+
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<img src="{{ asset('uploads/' ~ moyenne_tarnsport.image ) }}" class="img-fluid rounded" width='100%'/>
+			</div>
+
+		</div>
+	</div>
+	<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+	<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+	<script>
+		var point = document.querySelector('#point').value;
+		p = point.split(' ');
+		mapboxgl.accessToken = 'pk.eyJ1IjoiaG91ZGFtYWJyb3VrIiwiYSI6ImNrcDMwYnZ1YTE5OHAycGxnejJ4aHgwYTMifQ.A9Sdf5GSoNH8zM-LD1bTbA';
+		var map = new mapboxgl.Map({
+			container: 'map',
+			style: 'mapbox://styles/mapbox/dark-v10',
+			center: [p[0],p[1]],
+			zoom: 6
+		});
+		/*var popup_end = new mapboxgl.Popup({ offset: 25 }).setText(
+				'Destination.'
+		);*/
+		var marker_point= new mapboxgl.Marker({ color: 'yellow', rotation: 0 })
+				.setLngLat([p[0],p[1]])
+				.addTo(map);
+	</script>
+
+{% endblock %}

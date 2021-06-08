@@ -1,0 +1,58 @@
+{% extends 'baseF.html.twig' %}
+{% block title %}Offre
+{% endblock %}
+
+{% block content %}
+	<div class="container">
+		<h1 class="font-monospace text-muted ">{{offreType}}</h1>
+		<div class="row row-cols-2 row-cols-lg-4 g-2 g-lg-2 gx-2 ">
+			{% for offre in offres %}
+				<div class="col">
+					<div class="card  p-1">
+
+						{% set location = 'location'%}
+						{% if  offre.getOffreType().getType() == location  %}
+						<div class="card-header">Location Moyenne Transport</div>
+						<img src="{{ asset('uploads/' ~ offre.moyenneTransport.image ) }}" class="card-img-top" width="150px" height='150px'>
+							<div class="card-body">
+								<h5 class="card-title text-secondary">{{offre.moyenneTransport.nom }}</h5>
+								<p class="card-text">Prix: {{offre.prix }}</p>
+								<p class="card-text">Pour {{offre.nbplace}} Personnes</p>
+								<a href="{{path('DetailsLocation', {'id' :offre.id} ) }}" class="btn btn-warning btn-sm">Detalis</a>
+								<a href="{{path('ModifierLocation', {'id' :offre.id} ) }}" class="btn btn-outline-warning btn-sm">modifier</a>
+								<a href="{{path('SupprimerLocation', {'id' :offre.id} ) }}" class="btn btn-outline-warning btn-sm">Supprimer</a>
+							{% endif %}
+							{% set Voyage_organiser = 'voyage_organiser'%}
+
+							{% if  offre.getOffreType().getType() == Voyage_organiser  %}
+								<div class="card-header ">Voyage Organiser</div>
+								<img src="{{ asset('uploads/' ~ offre.moyenneTransport.image ) }}" class="card-img-top" width="150px" height='150px'>
+								<div class="card-body">
+									<h5 class="card-title text-secondary">{{offre.moyenneTransport.nom }}</h5>
+									<p class="card-text">Prix: {{offre.prix }}</p>
+									<p class="card-text">Pour {{offre.nbplace}} Personnes</p>
+								<a href="{{path('DetailsOrganiser', {'id' :offre.id} ) }}" class="btn btn-warning btn-sm">Detalis</a>
+								<a href="{{path('ModifierOrganiser', {'id' :offre.id} ) }}" class="btn btn-outline-warning btn-sm">modifier</a>
+								<a href="{{path('SupprimerOrganiser', {'id' :offre.id} ) }}" class="btn btn-outline-warning btn-sm">Supprimer</a>
+							{% endif %}
+
+							{% set voyage_regulier = 'voyage_regulier'%}
+
+							{% if  offre.getOffreType().getType() == voyage_regulier %}
+									<div class="card-header">Voyage Regulier</div>
+									<img src="{{ asset('uploads/' ~ offre.moyenneTransport.image ) }}" class="card-img-top" width="150px" height='150px'>
+									<div class="card-body">
+										<h5 class="card-title text-secondary">{{offre.moyenneTransport.nom }}</h5>
+										<p class="card-text">Prix: {{offre.prix }}</p>
+										<p class="card-text">Pour {{offre.nbplace}} Personnes</p>
+								<a href="{{path('DetailsRegulier', {'id' :offre.id} ) }}" class="btn btn-warning btn-sm">Detalis</a>
+								<a href="{{path('ModifierRegulier', {'id' :offre.id} ) }}" class="btn btn-outline-warning btn-sm">modifier</a>
+								<a href="{{path('SupprimerRegulier', {'id' :offre.id} ) }}" class="btn btn-outline-warning btn-sm">Supprimer</a>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}

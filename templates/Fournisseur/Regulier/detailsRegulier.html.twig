@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% block head %}
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Voyage Regulier
+			{% endblock %}</title>
+	{% block stylesheets %}
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.2/main.min.css" integrity="sha256-u40zn9KeZYpMjgYaxWJccb4HnP0i8XI17xkXrEklevE=" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+		<style>
+			#refreshButton {
+				position: absolute;
+				top: 20px;
+				right: 20px;
+				padding: 10px;
+				z-index: 400;
+			}
+
+		</style>
+	{% endblock %}
+
+	{% block javascripts %}
+		<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.2/main.min.js" integrity="sha256-yirUYbNvdsLHfZcQDyDMB51pfQ0Mn8siGDZOvtBgCFw=" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
+	{% endblock %}
+	{% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+	<div class="container-fluid">
+		<a class="fw-bold navbar-brand text-warning" href="{{path('offre' )}}">EasyNavigation</a>
+
+		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+			<div class="navbar-nav">
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="{{path('offre' )}}" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						Mes Offres
+					</a>
+					<ul class="dropdown-menu bg-dark" aria-labelledby="navbarScrollingDropdown">
+						<li>
+							<a class="dropdown-item text-warning" href="{{path('offre' )}}">Tous Les Offres</a>
+						</li>
+						<li>
+							<a class="dropdown-item text-warning" href="{{path('offre', {'offre' :'voyage_regulier'} ) }}">Offre Voyage Regulier</a>
+						</li>
+						<li>
+							<a class="dropdown-item text-warning" href="{{path('offre', {'offre' :'voyage_organiser'} ) }}">Offre Voyage Organiser</a>
+						</li>
+						<li><hr class="dropdown-divider"></li>
+						<li>
+							<a class="dropdown-item text-warning" href="{{path('offre', { 'offre' :'location'} ) }}">Offre Location Moyenne Transport</a>
+						</li>
+					</ul>
+				</li>
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						Crée un Offre
+					</a>
+					<ul class="dropdown-menu bg-dark" aria-labelledby="navbarScrollingDropdown">
+						<li>
+							<a class="dropdown-item text-warning" href="{{path('newVoyageRegulier')}}">Voyage Regulier</a>
+						</li>
+						<li>
+							<a class="dropdown-item text-warning" href="{{path('newVoyageOrganiser')}}">Voyage Organiser</a>
+						</li>
+						<li><hr class="dropdown-divider"></li>
+						<li>
+							<a class="dropdown-item text-warning" href="{{path('newLocation')}}">Location Moyenne Transport</a>
+						</li>
+					</ul>
+				</li>
+				<a class="nav-link" href="{{path('parc' )}}">Mes Parcs</a>
+				<a class="nav-link" href="{{path('parametre')}}">Paramétre</a>
+
+
+				<a class="nav-link" href="{{path('security_logout')}}">déconnexion</a>
+
+
+			</div>
+		</div>
+	</div>
+</nav>
+
+</br></br>
+
+	<div class="container">
+		<div class="row mt-4">
+			<div class="col">
+				<div class="card" style="width: 35rem;">
+					<div class="card-body">
+						<h5 class="card-title">Details Offre Voyage Regulier</h5>
+						<h6 class="card-subtitle mb-2 text-muted">{{moyenne_tarnsport.nom}}</h6>
+						<div id="map" style="height: 300px ; width:500px" ></div>
+						<p class="card-text">Prix: {{offre.prix}} dinar</p>
+						<p class="card-text">Numero Telephone: {{contact}}</p>
+						<p class="card-text">Pour {{offre.nbplace}} personne</p>
+						<p class="card-text">Description: {{moyenne_tarnsport.description}}</p>
+						<input type="hidden" id="depart"   value="{{regulier.depart}}" />
+						<input type="hidden" id="destination"   value="{{regulier.destination}}" />
+						<a href="{{path('ModifierRegulier', {'id' :offre.id} ) }}" class="btn btn-outline-warning btn-sm">modifier</a>
+						<a href="{{path('SupprimerRegulier', {'id' :offre.id} ) }}" class="btn btn-outline-warning btn-sm">Supprimer</a>
+					</div>
+				</div>
+			</div>
+			<div class="col mt-4">
+				<img src="{{ asset('uploads/' ~ moyenne_tarnsport.image ) }}" class="img-fluid rounded" width='100%'/>
+				<br>
+				<div id="calendrier" style="margin-top:5% ;width: 100%;" ></div>
+			</div>
+
+		</div>
+	</div>
+
+		<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+		<script>
+			//calandrier
+			window.onload = () => {
+				let calendarElt = document.querySelector('#calendrier');
+				let calendar = new FullCalendar.Calendar(calendarElt,{
+					initialView: 'dayGridWeek',
+					locale:'fr',
+					timeZone:'Tunisia',
+					headerToolbar :{
+						start: 'prev,next',
+						end : 'dayGridMonth,dayGridWeek'
+					},
+					events :{{ data|raw }},
+					//deplacer les evenement sur calandrier
+					editable : true,
+					eventResizableFromStart:true,
+				});
+				calendar.render();
+			}
+//map
+				var depart = document.querySelector('#depart').value;
+			start = depart.split(' ');
+			var destiantion = document.querySelector('#destination').value;
+			end = destiantion.split(' ');
+			mapboxgl.accessToken = 'pk.eyJ1IjoiaG91ZGFtYWJyb3VrIiwiYSI6ImNrcDMwYnZ1YTE5OHAycGxnejJ4aHgwYTMifQ.A9Sdf5GSoNH8zM-LD1bTbA';
+			var map = new mapboxgl.Map({
+				container: 'map',
+				style: 'mapbox://styles/mapbox/dark-v10',
+				center: [start[0], start[1]],
+				zoom: 6
+			});
+
+			var popup_end = new mapboxgl.Popup({ offset: 25 }).setText(
+					'Destination.'
+			);
+			var marker_end = new mapboxgl.Marker({ color: 'yellow', rotation: 0 })
+					.setLngLat([end[0], end[1]])
+					.setPopup(popup_end)
+					.addTo(map);
+			var popup_start = new mapboxgl.Popup({ offset: 25 }).setText(
+					'Depart   '
+			);
+			var marker_start = new mapboxgl.Marker({ color: 'yellow', rotation: 0 })
+					.setLngLat([start[0], start[1]])
+					.setPopup(popup_start)
+					.addTo(map);
+
+
+
+
+			var url = 'https://api.mapbox.com/directions/v5/mapbox/cycling/' + start[0] + ',' + start[1] + ';' + end[0] + ',' + end[1] + '?steps=true&geometries=geojson&access_token=' + mapboxgl.accessToken;
+			// make an XHR request https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
+			var req = new XMLHttpRequest();
+			req.open('GET', url, true);
+			req.onload = function () {
+				var json = JSON.parse(req.response);
+				var data = json.routes[0];
+				var route = data.geometry.coordinates;
+				console.log(route)
+				var geojson = {
+					type: 'Feature',
+					properties: {},
+					geometry: {
+						type: 'LineString',
+						coordinates: route
+					}
+				};
+				console.log(geojson)
+				// if the route already exists on the map, reset it using setData
+				// otherwise, make a new request
+
+				map.addLayer({
+					id: 'route',
+					type: 'line',
+					source: {
+						type: 'geojson',
+						data: {
+							type: 'Feature',
+							properties: {},
+							geometry: {
+								type: 'LineString',
+								coordinates: geojson
+							}
+						}
+					},
+					layout: {
+						'line-join': 'round',
+						'line-cap': 'round'
+					},
+					paint: {
+						'line-color': '#fcfcfc',
+						'line-width': 5,
+						'line-opacity': 0.75
+					}
+				});
+				//احبك‎
+				if (map.getSource('route')) {
+					map.getSource('route').setData(geojson);
+
+				}};
+			req.send();
+
+		</script>
+
+
+</body>
+</html>

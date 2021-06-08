@@ -1,0 +1,80 @@
+{% extends 'baseS.html.twig' %}
+{% block title %}Offre Location
+{% endblock %}
+{% block body %}
+
+	<div class="jumbotron">
+		<div class="container">
+			{{ form_start(formSerach) }}
+			<div class="row">
+				<div class="col">{{ form_widget(formSerach.maxPrix) }}</div>
+				<div class="col">{{form_widget(formSerach.minPrix)}}</div>
+				<div class="col">{{form_widget(formSerach.minNbplace) }}</div>
+
+
+				<div class="col">
+					<button class="btn btn-secondary">
+						Rechercher</button>
+				</div>
+			</div>
+			{{ form_end(formSerach) }}
+
+			<div class="row row-cols-2 row-cols-lg-4 g-2 g-lg-2 gx-2 mt-5 ">
+				{% for offre in offres %}
+					<div class="col">
+						<div class="card  p-1">
+							{% set location = 'location'%}
+								{% if  offre.getOffreType().getType() == location  %}
+								<div class="card-header">Location Moyenne Transport</div>
+								<img src="{{ asset('uploads/' ~ offre.moyenneTransport.image ) }}" class="card-img-top" width="150px" height='150px'>
+								<div class="card-body">
+								<h5 class="card-title text-secondary">{{offre.moyenneTransport.nom }}</h5>
+								<p class="card-text">Prix:
+									{{offre.prix }} DT</p>
+								<p class="card-text">pour
+									{{offre.nbplace}} personnes</p>
+									<div class="d-grid gap-2">
+										<a href="{{path('DetailsLocationS', {'id' :offre.id} ) }}" class="btn btn-dark btn-sm">Detalis</a>
+									</div>
+								{% endif %}
+								{% set Voyage_organiser = 'voyage_organiser'%}
+
+								{% if  offre.getOffreType().getType() == Voyage_organiser  %}
+									<div class="card-header">Voyage Organiser</div>
+									<img src="{{ asset('uploads/' ~ offre.moyenneTransport.image ) }}" class="card-img-top" width="150px" height='150px'>
+									<div class="card-body">
+										<h5 class="card-title text-secondary">{{offre.moyenneTransport.nom }}</h5>
+										<p class="card-text">Prix:
+											{{offre.prix }} DT</p>
+										<p class="card-text">Pour
+											{{offre.nbplace}} personnes</p>
+									<div class="d-grid gap-2">
+										<a href="{{path('DetailsOrganiserS', {'id' :offre.id} ) }}" class="btn btn-dark btn-sm">Detalis</a>
+									</div>
+								{% endif %}
+
+								{% set voyage_regulier = 'voyage_regulier'%}
+
+								{% if  offre.getOffreType().getType() == voyage_regulier %}
+										<div class="card-header">Voyage Regulier</div>
+										<img src="{{ asset('uploads/' ~ offre.moyenneTransport.image ) }}" class="card-img-top" width="150px" height='150px'>
+										<div class="card-body">
+											<h5 class="card-title text-secondary">{{offre.moyenneTransport.nom }}</h5>
+											<p class="card-text">Prix:
+												{{offre.prix }} DT</p>
+											<p class="card-text">Pour
+												{{offre.nbplace}} personnes</p>
+									<div class="d-grid gap-2">
+										<a href="{{path('DetailsRegulierS', {'id' :offre.id} ) }}" class="btn btn-dark btn-sm">Detalis</a>
+									</div>
+
+								{% endif %}
+							</div>
+
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'baseS.html.twig' %}
+{% block title %}Offre Location
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h1 class="h1 text-dark ">paramètre
+		</h1>
+		<div class="row ">
+			<div class="col-5 mt-5">
+				{{ form_start(formEdit) }}
+				<h4 class="fw-normal  link-secondary mt-2 mb_1">Détails du profil
+				</h4>
+				<div class="row mb-3">
+					<div class="col">
+						<p>
+							<small class="text-danger">{{ form_errors(formEdit.user.nomUser) }}</small>
+						</p>
+						<div class="col">{{form_widget(formEdit.user.nomUser)}}</div>
+					</div>
+					<div class="col">
+						<p>
+							<small class="text-danger">{{ form_errors(formEdit.user.Username) }}</small>
+						</p>
+						<div class="col">{{form_widget(formEdit.user.Username)}}</div>
+					</div>
+				</div>
+				<div class="col">
+
+					<p>
+						<small class="text-danger">{{ form_errors(formEdit.genre) }}</small>
+					</p>
+					<div class="mb-3">{{form_widget(formEdit.genre)}}</div>
+
+					<p>
+						<small class="text-danger">{{ form_errors(formEdit.dataNaissance) }}</small>
+					</p>
+					<div class="mb-3">{{form_widget(formEdit.dataNaissance)}}</div>
+
+					<p>
+						<small class="text-danger">{{ form_errors(formEdit.ville) }}</small>
+					</p>
+					<div class="mb-3">{{form_widget(formEdit.ville)}}</div>
+
+					<p>
+						<small class="text-danger">{{ form_errors(formEdit.user.Email) }}</small>
+					</p>
+					<div class="mb-3">{{form_widget(formEdit.user.Email)}}</div>
+
+				</div>
+				<div class="text-center mb-4">{{form_widget(formEdit.Enregistrer)}}</div>
+
+				{{ form_end(formEdit) }}
+			</div>
+
+			<div class="col-1"></div>
+			<div class='col-5 mt-5'>
+
+
+				{{ form_start(formpass) }}
+
+				<h4 class="fw-normal  link-secondary mt-5 mb_1">Modfier Mot de passe
+				</h4>
+
+				<p>
+					<small class="text-danger">{{ form_errors(formpass.oldPassword) }}</small>
+				</p>
+				<div class="mb-3">{{form_widget(formpass.oldPassword)}}</div>
+
+				<p>
+					<small class="text-danger">{{ form_errors(formpass.Password) }}</small>
+				</p>
+				<div class="mb-3">{{form_widget(formpass.Password)}}</div>
+
+				{{ form_end(formpass) }}
+			</div>
+		</div>
+		<div class='col-2'>
+			<p class="card-text bg-light" style="transform: rotate(0);">
+				<a href="{{path('SupprimerS', {'id' :user.id} ) }}" class="text-warning stretched-link">Supprimer le compte</a>
+			</p>
+		</div>
+	</div>
+{% endblock %}
