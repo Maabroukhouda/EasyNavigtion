@@ -108,7 +108,7 @@ class LocationsController extends AbstractController
 
         $manager->remove($offre);
         $manager->flush();
-        return $this->redirectToRoute('offre', );
+        return $this->redirectToRoute('offre' );
 
     }
 
@@ -120,6 +120,8 @@ class LocationsController extends AbstractController
 
             $user = $this->getUser();
             $parcs = $user->getparcs();
+            $nb = $parcs->count();
+            //dd($nb);
             //$user = $security->getUser();
             $form_location = $this->createForm(LocationType::class);
             $form_location->handleRequest($request);
@@ -148,7 +150,7 @@ class LocationsController extends AbstractController
                     //$offre->setCreatedAt(new \DateTime('now'));
                     $location = new Location();
                     $location->setOffre($offre);
-                    $location->setParcs($data['parc']);
+                    $location->setParcs($data['parcs']);
                     $moy_tran = new MoyenneTransport();
                     $moy_tran->setNom($data['nom']);
                     $moy_tran->setImage($fileName);
@@ -167,6 +169,7 @@ class LocationsController extends AbstractController
             return $this->render('Fournisseur/Location/location.html.twig', [
                 'formLocation' => $form_location->createView(),
                 'parcs'=>$parcs,
+                'nb'=>$nb,
             ]);
         } catch (FileException $e) {
             error_log($e->getMessage());

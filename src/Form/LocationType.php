@@ -85,13 +85,16 @@ class LocationType extends AbstractType
                         'class' => 'form-control',
 
                     ]
-            ]);
-            /*->add('parcs', EntityType::class, [
+            ])
+            ->add('parcs', EntityType::class, [
             'class' =>Parcs::class,
-
             // uses the User.username property as the visible option string
-            'choice_label'  => function ($parcs) {
-                return $parcs->getId();
+            'choice_label'  => function ($parcs,$nb) {
+                for ($i =0 ; $i<= $nb ; $i++) {
+                    $x='point '.($i+1);
+
+                }
+                return  $x;
              },
            'attr' => [
                'label' => false,
@@ -99,12 +102,7 @@ class LocationType extends AbstractType
                'expanded' => false,
                'multiple' => false
            ]
-
-        ])
-            <div class="row">
-						<div class="col-lg-3"> Parcs: </div>
-						<div class="col-lg-9"> {{form_widget(formLocation.parcs)}}</div>
-					</div>;*/
+        ]);
     }
     public function getBlockPrefix()
     {

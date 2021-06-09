@@ -39,19 +39,6 @@ class VoyageRegulier
      */
     private $offre;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Calendrier::class, mappedBy="voyage_regulier")
-     */
-    private $calendriers;
-
-    public function __construct()
-    {
-        $this->calendriers = new ArrayCollection();
-    }
-
-
-
-
 
     public function getId(): ?int
     {
@@ -96,35 +83,6 @@ class VoyageRegulier
         return $this;
     }
 
-    /**
-     * @return Collection|Calendrier[]
-     */
-    public function getCalendriers(): Collection
-    {
-        return $this->calendriers;
-    }
-
-    public function addCalendrier(Calendrier $calendrier): self
-    {
-        if (!$this->calendriers->contains($calendrier)) {
-            $this->calendriers[] = $calendrier;
-            $calendrier->setVoyageRegulier($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCalendrier(Calendrier $calendrier): self
-    {
-        if ($this->calendriers->removeElement($calendrier)) {
-            // set the owning side to null (unless already changed)
-            if ($calendrier->getVoyageRegulier() === $this) {
-                $calendrier->setVoyageRegulier(null);
-            }
-        }
-
-        return $this;
-    }
 
 
 }

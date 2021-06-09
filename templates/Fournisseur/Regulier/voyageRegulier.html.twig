@@ -7,11 +7,13 @@
 			{% block title %}EasyNavigation
 			{% endblock %}</title>
 	{% block stylesheets %}
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.2/main.min.css" integrity="sha256-u40zn9KeZYpMjgYaxWJccb4HnP0i8XI17xkXrEklevE=" crossorigin="anonymous">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="/resources/demos/style.css">
 	<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css" type="text/css">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
 	<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+	<link href="css/mobiscroll.javascript.min.css" rel="stylesheet" />
 		<style>
 			#refreshButton {
 				position: absolute;
@@ -20,17 +22,14 @@
 				padding: 10px;
 				z-index: 400;
 			}
-			#calendrier{
-				width: 70%;
-				margin: auto;
-			}
+
 		</style>
 	{% endblock %}
 
 	{% block javascripts %}
-		<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.2/main.min.js" integrity="sha256-yirUYbNvdsLHfZcQDyDMB51pfQ0Mn8siGDZOvtBgCFw=" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
+
 	{% endblock %}
 	{% endblock %}
 </head>
@@ -91,78 +90,72 @@
 </nav>
 
 </br></br>
-<h3 class="text-center link-Light fst-italic">
-	Offre Voyage Regulier</h3>
-{{ form_start(formVoyageR) }}
 
 <div class="row">
-	<div class="col">
-		{{form_widget(formVoyageR.depart)}}
-		<small class="text-danger">{{form_errors(formVoyageR.depart) }}</small>
-	</div>
-	<div class="col">
-		<small class="text-danger">{{form_errors(formVoyageR.destination) }}</small>
-		{{form_widget(formVoyageR.destination)}}	</div>
-</div>
+	{{ form_start(formVoyageR) }}
+
+		<div class="col">
+			{{form_widget(formVoyageR.depart)}}
+			<small class="text-danger">{{form_errors(formVoyageR.depart) }}</small>
+		</div>
+		<div class="col">
+			<small class="text-danger">{{form_errors(formVoyageR.destination) }}</small>
+			{{form_widget(formVoyageR.destination)}}
+		</div>
 		<div class="row mt-2">
 			<div class="col-lg-3" style="margin-left: 5%">
-
+				<h3 class="text-center link-Light fst-italic">
+				Offre Voyage Regulier</h3>
 				</br>
 				<div class="form-group">
-
-					<div class="mb-3">
-						</div>
-					<div class="mb-3">
-						<small class="text-danger">{{form_errors(formVoyageR.nbplace) }}</small>
-						{{form_widget(formVoyageR.nbplace)}}</div>
-					<div class="mb-3">
-						<small class="text-danger">{{form_errors(formVoyageR.nom) }}</small>
-						{{form_widget(formVoyageR.nom)}}</div>
-					<div class="mb-3">
-						<small class="text-danger">{{form_errors(formVoyageR.image) }}</small>
-
-						{{form_widget(formVoyageR.image)}}</div>
-					<div class="mb-3">
-						<small class="text-danger">{{form_errors(formVoyageR.description) }}</small>
-						{{form_widget(formVoyageR.description)}}</div>
-					<div class="mb-3">
-						<small class="text-danger">{{form_errors(formVoyageR.prix) }}</small>
-						{{form_widget(formVoyageR.prix)}}</div>
-					<div class="text-center">
-						<button type="submit" class="btn btn-outline-dark">
-							Ajouter
-						</button>
-					</div>
+				<div class="mb-3">
+					<p>Date: <div  id="date-picker" style="width: 20%"> </div></p>
 				</div>
-					{{ form_end(formVoyageR) }}
-			</div>
-			<div class="col-lg-4" style="margin-top: 5%">
-			<div id="calendrier"></div>
-			</div>
-			<div class="col-lg-4">
-				<div id="map" style="height: 80% ; margin-right: 5% ; margin-top: 15%" >
-					<button class="btn btn-warning btn-sm" id="refreshButton" onclick="myFunction()">Actualiser</button>
+				<div class="mb-3">
+					<small class="text-danger">{{form_errors(formVoyageR.nbplace) }}</small>
+					{{form_widget(formVoyageR.nbplace)}}
+				</div>
+				<div class="mb-3">
+					<small class="text-danger">{{form_errors(formVoyageR.nom) }}</small>
+					{{form_widget(formVoyageR.nom)}}
+				</div>
+				<div class="mb-3">
+					<small class="text-danger">{{form_errors(formVoyageR.image) }}</small>
+					{{form_widget(formVoyageR.image)}}
+				</div>
+				<div class="mb-3">
+					<small class="text-danger">{{form_errors(formVoyageR.description) }}</small>
+					{{form_widget(formVoyageR.description)}}
+				</div>
+				<div class="mb-3">
+					<small class="text-danger">{{form_errors(formVoyageR.prix) }}</small>
+					{{form_widget(formVoyageR.prix)}}
+				</div>
+				<div class="text-center">
+					<button type="submit" class="btn btn-outline-dark">Ajouter</button>
 				</div>
 			</div>
 		</div>
+	{{ form_end(formVoyageR) }}
+
+	<div class="col-lg-7">
+		<div id="map" style="height: 100% " >
+			<button class="btn btn-warning btn-sm" id="refreshButton" onclick="myFunction()">Actualiser</button>
+		</div>
+	</div>
+</div>
+<script src="js/mobiscroll.javascript.min.js"></script>
+<script>
+	mobiscroll.datepicker('#date-picker', {
+		controls: ['calendar'],
+		selectMultiple: true,
+		selectCounter: true
+	});
+</script>
 
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
 <script>
-	//calandrier
-	window.onload = () => {
-		let calendarElt = document.querySelector('#calendrier');
-		let calendar = new FullCalendar.Calendar(calendarElt,{
-			initialView: 'dayGridMonth',
-			locale:'fr',
-			timeZone:'Tunisia',
-			headerToolbar :{
-				start: 'prev,next',
-				end : 'dayGridMonth,dayGridWeek'
-			}
-		});
-		calendar.render();
-	}
 
 	//map
 	mapboxgl.accessToken = 'pk.eyJ1IjoiaG91ZGFtYWJyb3VrIiwiYSI6ImNrcDMwYnZ1YTE5OHAycGxnejJ4aHgwYTMifQ.A9Sdf5GSoNH8zM-LD1bTbA';
@@ -352,6 +345,8 @@
 			map.removeSource('route');
 		}
 	}
+
+
 
 </script>
 </body>
