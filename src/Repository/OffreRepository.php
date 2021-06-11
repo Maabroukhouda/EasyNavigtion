@@ -28,7 +28,7 @@ class OffreRepository extends ServiceEntityRepository
      * @return Offre[]
      */
 
-    public function FilterDate(?int $min_prix, ?int $max_prix, ?int $min_nb_place, bool $includeUnavailableProducts = false): array
+    public function FilterDate(?int $min_prix, ?int $max_prix, ?int $min_nb_place, $depart,$destiantion, bool $includeUnavailableProducts = false): array
     {
         $qb = $this->createQueryBuilder('p');
         // ->select('p');

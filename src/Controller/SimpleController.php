@@ -59,6 +59,7 @@ class SimpleController extends AbstractController
             'parcs'=>$parcs,
         ]);
     }
+
     #[Route('/Offre/{id}/DetailsOrganiser', name: 'DetailsOrganiserS')]
     public function DetailsOrganiser(Offre $offre, $id)
     {
@@ -81,6 +82,7 @@ class SimpleController extends AbstractController
             error_log($e->getMessage());
         }
     }
+
     #[Route('/Offre', name: 'simple_user')]
     public function userSimple(Request $request, OffreRepository $offre_repository, EntityManagerInterface $manager)
     {
@@ -91,8 +93,12 @@ class SimpleController extends AbstractController
             $min_prix = $formSearch->get('minPrix')->getData();
             $min_nb_place = $formSearch->get('minNbplace')->getData();
             $max_prix = $formSearch->get('maxPrix')->getData();
+            $depart = $formSearch->get('depart')->getData();
+            //dd($depart);
+            $destiantion = $formSearch->get('destination')->getData();
+
             //$date = $formSearch->get('date')->getData();
-            $offres = $offre_repository->FilterDate($min_prix, $max_prix, $min_nb_place);
+            $offres = $offre_repository->FilterDate($min_prix, $max_prix, $min_nb_place,$depart, $destiantion);
 
             return $this->render('userSimple/simpleUser.html.twig', [
                 'offres' => $offres,

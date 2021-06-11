@@ -119,6 +119,8 @@ class LocationsController extends AbstractController
             $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
             $user = $this->getUser();
+            //$parcs= $this->getDoctrine()->getRepository(Offre::class)->find($user);
+            //dd($parcs);
             $parcs = $user->getparcs();
             $nb = $parcs->count();
             //dd($nb);

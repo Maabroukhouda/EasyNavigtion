@@ -36,7 +36,7 @@ class RegulierController extends AbstractController
             $moyenne_transport = $offre->getMoyenneTransport();
             $regulier = $offre->getVoyageRegulier();
             $contact = $offre->getUser()->getFournisseur()->getnumTel();
-            $events = $this->getDoctrine()->getRepository(Calendrier::class)->findBy(['voyage_regulier' => $regulier]);
+            /*$events = $this->getDoctrine()->getRepository(Calendrier::class)->findBy(['voyage_regulier' => $regulier]);
             //dd($events);
             $cal =[];
             foreach ($events as $e){
@@ -50,7 +50,7 @@ class RegulierController extends AbstractController
 
                 ];
             }
-            $data = json_encode($cal);
+            $data = json_encode($cal);*/
 
 
             return $this->render('Fournisseur/Regulier/detailsRegulier.html.twig', [
@@ -58,7 +58,7 @@ class RegulierController extends AbstractController
                 'moyenne_tarnsport' => $moyenne_transport,
                 'regulier' => $regulier,
                 'contact' => $contact,
-                'data'=>$data,
+               // 'data'=>$data,
             ]);
         } catch (FileException $e) {
             error_log($e->getMessage());
@@ -110,7 +110,7 @@ class RegulierController extends AbstractController
             $manager->flush();
             return $this->redirectToRoute('DetailsRegulier', ['id' => $id]);
         }
-        $events = $this->getDoctrine()->getRepository(Calendrier::class)->findBy(['voyage_regulier' => $voyage_regulier]);
+        /*$events = $this->getDoctrine()->getRepository(Calendrier::class)->findBy(['voyage_regulier' => $voyage_regulier]);
         //dd($events);
         $cal =[];
         foreach ($events as $e){
@@ -124,12 +124,12 @@ class RegulierController extends AbstractController
 
             ];
         }
-        $data = json_encode($cal);
+        $data = json_encode($cal);*/
 
             return $this->render('Fournisseur/Regulier/editRegulier.html.twig', [
             'formRegulier' => $form_edit_regulier->createView(),
             'moyenneTransport'=>$moy_tran,
-                'data'=>$data,
+                //'data'=>$data,
 
         ]);
     }

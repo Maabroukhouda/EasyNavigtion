@@ -91,7 +91,7 @@ class LocationType extends AbstractType
             // uses the User.username property as the visible option string
             'choice_label'  => function ($parcs,$nb) {
                 for ($i =0 ; $i<= $nb ; $i++) {
-                    $x='point '.($i+1);
+                    $x='parc '.($i+1);
 
                 }
                 return  $x;

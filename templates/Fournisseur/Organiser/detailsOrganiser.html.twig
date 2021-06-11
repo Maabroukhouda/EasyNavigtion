@@ -47,11 +47,10 @@
 							<a class="dropdown-item text-warning" href="{{path('offre', {'offre' :'voyage_regulier'} ) }}">Offre Voyage Regulier</a>
 						</li>
 						<li>
-							<a class="dropdown-item text-warning" href="{{path('offre', {'offre' :'voyage_organiser'} ) }}">Offre Voyage Organiser</a>
+							<a class="dropdown-item text-warning" href="{{path('offre', {'offre' :'voyage_organiser'} ) }}">Offre Voyage Organisé</a>
 						</li>
-						<li><hr class="dropdown-divider"></li>
 						<li>
-							<a class="dropdown-item text-warning" href="{{path('offre', { 'offre' :'location'} ) }}">Offre Location Moyenne Transport</a>
+							<a class="dropdown-item text-warning" href="{{path('offre', { 'offre' :'location'} ) }}">Offre Location Moyen Transport</a>
 						</li>
 					</ul>
 				</li>
@@ -64,21 +63,16 @@
 							<a class="dropdown-item text-warning" href="{{path('newVoyageRegulier')}}">Voyage Regulier</a>
 						</li>
 						<li>
-							<a class="dropdown-item text-warning" href="{{path('newVoyageOrganiser')}}">Voyage Organiser</a>
+							<a class="dropdown-item text-warning" href="{{path('newVoyageOrganiser')}}">Voyage Organisé</a>
 						</li>
-						<li><hr class="dropdown-divider"></li>
 						<li>
-							<a class="dropdown-item text-warning" href="{{path('newLocation')}}">Location Moyenne Transport</a>
+							<a class="dropdown-item text-warning" href="{{path('newLocation')}}">Location Moyen Transport</a>
 						</li>
 					</ul>
 				</li>
 				<a class="nav-link" href="{{path('parc' )}}">Mes Parcs</a>
 				<a class="nav-link" href="{{path('parametre')}}">Paramétre</a>
-
-
 				<a class="nav-link" href="{{path('security_logout')}}">déconnexion</a>
-
-
 			</div>
 		</div>
 	</div>
@@ -111,8 +105,8 @@
 	</div>
 </div>
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
-		<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
-		<script>
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+<script>
 			var depart = document.querySelector('#depart').value;
 			start = depart.split(' ');
 			var destiantion = document.querySelector('#destination').value;
@@ -132,15 +126,15 @@
                                 .setLngLat([end[0], end[1]])
 								.setPopup(popup_end)
                                 .addTo(map);
+
 			var popup_start = new mapboxgl.Popup({ offset: 25 }).setText(
 					'Depart'
 			);
+
 			var marker_start = new mapboxgl.Marker({ color: 'yellow', rotation: 0 })
-					.setLngLat([start[0], start[1]])
-					.setPopup(popup_start)
-					.addTo(map);
-
-
+					               .setLngLat([start[0], start[1]])
+					               .setPopup(popup_start)
+					               .addTo(map);
 
 
 			var url = 'https://api.mapbox.com/directions/v5/mapbox/cycling/' + start[0] + ',' + start[1] + ';' + end[0] + ',' + end[1] + '?steps=true&geometries=geojson&access_token=' + mapboxgl.accessToken;
@@ -162,7 +156,7 @@
 				};
 				console.log(geojson)
 				// if the route already exists on tt
-				he map, reset it using setData
+				//he map, reset it using setData
 				// otherwise, make a new reques
 					map.addLayer({
 						id: 'route',
