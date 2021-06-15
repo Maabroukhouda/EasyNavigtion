@@ -22,6 +22,7 @@ class SearchType extends AbstractType
             ->add('destination',HiddenType::class,[
                 'attr' => ['id' => 'destination'],
             ])
+
             ->add('maxPrix', IntegerType::class, [
                 'required' => false,
                 'label' => false,
@@ -30,7 +31,18 @@ class SearchType extends AbstractType
                     'placeholder' => 'Prix maximale',
                     'class' => 'form-control',
                 ]
-            ])->add('minPrix', IntegerType::class, [
+            ])
+            ->add('disatnce' , IntegerType::class,
+                [
+                    'required' => false,
+                    'label' => false,
+                    'empty_data' => 0,
+                    'attr' => [
+                        'placeholder' => 'en kilometer',
+                        'class' => 'form-control',
+                    ]
+                ])
+            ->add('minPrix', IntegerType::class, [
                 'required' => false,
                 'label' => false,
                 'empty_data' => 0,

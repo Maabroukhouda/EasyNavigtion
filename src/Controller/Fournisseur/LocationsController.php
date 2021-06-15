@@ -3,6 +3,7 @@
 namespace App\Controller\Fournisseur;
 
 use App\Entity\Offre;
+use App\Entity\Parcs;
 use App\Entity\User;
 use App\Entity\Location;
 use Doctrine\ORM\EntityManagerInterface;
@@ -119,10 +120,12 @@ class LocationsController extends AbstractController
             $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
             $user = $this->getUser();
-            //$parcs= $this->getDoctrine()->getRepository(Offre::class)->find($user);
-            //dd($parcs);
-            $parcs = $user->getparcs();
-            $nb = $parcs->count();
+            $U_parcs =$this->getDoctrine()->getRepository(Parcs::class)->findBy(['user' => $user]);
+            //$parcs= $this->getDoctrine()->getRepository(Parcs::class)->find($user);
+            //dd($U_parcs);
+
+            //$user_parc = $user->getparcs();
+            //$nb = $user_parc->count();
             //dd($nb);
             //$user = $security->getUser();
             $form_location = $this->createForm(LocationType::class);
@@ -170,8 +173,8 @@ class LocationsController extends AbstractController
             }
             return $this->render('Fournisseur/Location/location.html.twig', [
                 'formLocation' => $form_location->createView(),
-                'parcs'=>$parcs,
-                'nb'=>$nb,
+                'parcs'=>$U_parcs,
+                //'nb'=>$nb,
             ]);
         } catch (FileException $e) {
             error_log($e->getMessage());

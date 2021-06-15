@@ -2,8 +2,10 @@
 
 namespace App\Controller\Fournisseur;
 
+use App\Entity\Calandrier;
 use App\Entity\Calendrier;
 use App\Entity\Offre;
+use App\Entity\Parcs;
 use App\Entity\VoyageRegulier;
 use App\Entity\User;
 
@@ -150,11 +152,12 @@ class RegulierController extends AbstractController
         $manager->remove($moy_tran);
         $manager->remove($offre);
         $manager->flush();
-        return $this->redirectToRoute('offre', );
+        return $this->redirectToRoute('offre');
 
     }
+
         #[Route('/Offres/newRegulier', name: 'newVoyageRegulier')]
-    public function newVoyageRegulier(ValidatorInterface $validator,Request $request, Security $security): Response
+    public function newVoyageRegulier(ValidatorInterface $validator,Request $request, Security $security,EntityManagerInterface $manager): Response
     {
         try {
             $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -167,6 +170,7 @@ class RegulierController extends AbstractController
             $form_voy_regulier = $this->createForm(VoyageRegulierType::class);
             $form_voy_regulier->handleRequest($request);
             if ($form_voy_regulier->isSubmitted() && $form_voy_regulier->isValid()) {
+
                 $errors = $validator->validate($offre);
                 if (count($errors) > 0) {
                     return $this->render('Fournisseur/Regulier/voyageRegulier.html.twig', [
@@ -185,10 +189,7 @@ class RegulierController extends AbstractController
                 );
                     $moy_tran->setImage($fileName);
 
-
-
                     $data = $form_voy_regulier->getData();
-
 
                     $offreType = $this->getDoctrine()
                         ->getRepository(OffreType::class)
@@ -220,10 +221,8 @@ class RegulierController extends AbstractController
                         ]);
                     }
 
-                    $entityManager = $this->getDoctrine()->getManager();
-                    $entityManager->persist($moy_tran);
-                    $entityManager->persist($voy_reg);
-                    $entityManager->flush();
+                    $manager->persist($moy_tran);
+                    $manager->flush();
 
                     return $this->redirectToRoute('offre');
                 }

@@ -93,12 +93,10 @@ class SimpleController extends AbstractController
             $min_prix = $formSearch->get('minPrix')->getData();
             $min_nb_place = $formSearch->get('minNbplace')->getData();
             $max_prix = $formSearch->get('maxPrix')->getData();
-            $depart = $formSearch->get('depart')->getData();
-            //dd($depart);
+            $dep = $formSearch->get('depart')->getData();
             $destiantion = $formSearch->get('destination')->getData();
-
-            //$date = $formSearch->get('date')->getData();
-            $offres = $offre_repository->FilterDate($min_prix, $max_prix, $min_nb_place,$depart, $destiantion);
+            $disatnce =$formSearch->get('disatnce')->getData();
+            $offres = $offre_repository->FilterDate($min_prix, $max_prix, $min_nb_place,$dep, $destiantion, $disatnce);
 
             return $this->render('userSimple/simpleUser.html.twig', [
                 'offres' => $offres,

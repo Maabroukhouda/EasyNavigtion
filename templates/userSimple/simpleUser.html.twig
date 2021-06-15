@@ -16,6 +16,8 @@
 
 				<br>
 					<div class="row">{{ form_widget(formSerach.maxPrix) }}</div>
+					<br>
+					<div class="row ">{{form_widget(formSerach.disatnce) }}</div>
 
 					<br>
 					<div class="row ">{{form_widget(formSerach.minNbplace) }}</div>
@@ -95,6 +97,8 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
 <script>
+	document.querySelector('#depart').value = null;
+	document.querySelector('#destination').value = null;
 
 mapboxgl.accessToken = 'pk.eyJ1IjoiaG91ZGFtYWJyb3VrIiwiYSI6ImNrcDMwYnZ1YTE5OHAycGxnejJ4aHgwYTMifQ.A9Sdf5GSoNH8zM-LD1bTbA';
 var map = new mapboxgl.Map({

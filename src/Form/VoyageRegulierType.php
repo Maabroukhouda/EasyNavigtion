@@ -38,7 +38,7 @@ class VoyageRegulierType extends AbstractType
                 'prix',
                 NumberType::class,
                 ['attr' => [
-                    'placeholder' => "Prix",
+                    'placeholder' => "Prix en dinar par jour",
                     'class' => 'form-control',
 
                 ]]

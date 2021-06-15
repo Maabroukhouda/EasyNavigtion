@@ -50,7 +50,7 @@ class ParcController extends AbstractController
             $all_parcs="";
             $user_parc =$this->getDoctrine()
                 ->getRepository(Parcs::class)
-                ->findAll(['user' => $user->getId()]);
+                ->findBy(['user' => $user->getId()]);
             foreach($user_parc as $parc){
                 $point=strval($parc->getlocation());
                $all_parcs .=$point.",";

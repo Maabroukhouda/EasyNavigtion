@@ -159,11 +159,17 @@
 <div class="map-overlay top">
 	<div class="map-overlay-inner">
 		<div class="row" style="width: 15rem;">
+			{% if userparc %}
 			{% for parc in userparc %}
 				<h5 class="col-6">Parc  {{ loop.index }}</h5>
 				<a class="col-2 btn btn-warning btn-close "  aria-label="Close" href="{{path('delete_parc', {'id' :parc.id } ) }}" role="button"></a>
 				<p></p>
 			{% endfor %}
+			{% else %}
+				<h5 class="col-6">Aucun parc</h5>
+
+			{% endif %}
+
 			<input type="hidden" value="{{all_parc}}" id="all" >
 		</div>
 	</div>

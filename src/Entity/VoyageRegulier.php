@@ -39,6 +39,20 @@ class VoyageRegulier
      */
     private $offre;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Calandrier::class, mappedBy="regulier", orphanRemoval=true)
+     */
+    private $calandriers;
+
+    public function __construct()
+    {
+        $this->calandriers = new ArrayCollection();
+    }
+
+
+
+
+
 
     public function getId(): ?int
     {
@@ -82,6 +96,38 @@ class VoyageRegulier
 
         return $this;
     }
+
+    /**
+     * @return Collection|Calandrier[]
+     */
+    public function getCalandriers(): Collection
+    {
+        return $this->calandriers;
+    }
+
+    public function addCalandrier(Calandrier $calandrier): self
+    {
+        if (!$this->calandriers->contains($calandrier)) {
+            $this->calandriers[] = $calandrier;
+            $calandrier->setRegulier($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCalandrier(Calandrier $calandrier): self
+    {
+        if ($this->calandriers->removeElement($calandrier)) {
+            // set the owning side to null (unless already changed)
+            if ($calandrier->getRegulier() === $this) {
+                $calandrier->setRegulier(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 
 
 

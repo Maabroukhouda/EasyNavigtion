@@ -28,14 +28,15 @@ class OffreRepository extends ServiceEntityRepository
      * @return Offre[]
      */
 
-    public function FilterDate(?int $min_prix, ?int $max_prix, ?int $min_nb_place, $depart,$destiantion, bool $includeUnavailableProducts = false): array
+    public function FilterDate(?int $min_prix, ?int $max_prix, ?int $min_nb_place, $dep, $destiantion,?int $disatnce, bool $includeUnavailableProducts = false): array
     {
-        $qb = $this->createQueryBuilder('p');
-        // ->select('p');
-        //'L', 'p', 'VR', 'VO')
-        // ->leftJoin('p.voyageOrganiser', 'VO')
-        //->leftJoin('p.voyageRegulier', 'VR')
-        //->leftJoin('p.location', 'L');
+        $qb = $this->createQueryBuilder('p')
+        ->select('L', 'p', 'VR', 'VO')
+        ->leftJoin('p.voyageOrganiser', 'VO')
+        ->leftJoin('p.voyageRegulier', 'VR')
+        ->leftJoin('p.location', 'L');
+
+
 
         if ($min_prix != null) {
 
@@ -57,6 +58,140 @@ class OffreRepository extends ServiceEntityRepository
                 // ->orWhere('VR.nbPlace >= :nb_place')
                 ->setParameter('nb_place', $min_nb_place);
         }
+
+        if($dep!=null AND $destiantion==null){
+            if($disatnce == null){
+                $disatnce = 0;
+                $conn = $this->getEntityManager()->getConnection();
+
+                $sql ="SELECT L.offre_id FROM  location L 
+                    INNER join parcs P on  L.parcs_id  = P.id
+                    where ST_Distance(Point($dep), P.location) <= $disatnce ";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+                $L= $stmt->fetchAll();
+
+                $sql = "
+            select VO.offre_id   
+            from  voyage_organiser   VO
+             where ST_Distance(Point($dep), VO.depart ) <= $disatnce   ";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+                $O= $stmt->fetchAll();
+
+                $sql = "select VR.offre_id   
+            from  voyage_regulier   VR
+             where ST_Distance(Point($dep), VR.depart ) <= $disatnce ";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+                $R= $stmt->fetchAll();
+
+                $result = array_merge($R , $O,$L);
+                $offres = array_column($result, 'offre_id');
+                $offres_id = array_map('intval', $offres);
+                $qb = $qb->andWhere($qb->expr()->in('p.id ','?1'))
+                    ->setParameter(1,$offres_id);
+            }
+            else{
+            $conn = $this->getEntityManager()->getConnection();
+
+            $sql ="SELECT L.offre_id FROM  location L 
+                    INNER join parcs P on  L.parcs_id  = P.id
+                    where ST_Distance(Point($dep), P.location) <= $disatnce ";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $L= $stmt->fetchAll();
+
+            $sql = "
+            select VO.offre_id   
+            from  voyage_organiser   VO
+             where ST_Distance(Point($dep), VO.depart ) <= $disatnce   ";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $O= $stmt->fetchAll();
+
+            $sql = "select VR.offre_id   
+            from  voyage_regulier   VR
+             where ST_Distance(Point($dep), VR.depart ) <= $disatnce ";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $R= $stmt->fetchAll();
+
+            $result = array_merge($R , $O,$L);
+            $offres = array_column($result, 'offre_id');
+            $offres_id = array_map('intval', $offres);
+            $qb = $qb->andWhere($qb->expr()->in('p.id ','?1'))
+                ->setParameter(1,$offres_id);
+
+        }}
+
+        if($dep!=null AND $destiantion!=null){
+            if($disatnce == null){
+                $disatnce = 0;
+                $conn = $this->getEntityManager()->getConnection();
+
+                $sql ="SELECT L.offre_id FROM  location L 
+                    INNER join parcs P on  L.parcs_id  = P.id
+                    where ST_Distance(Point($dep), P.location) <= $disatnce ";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+                $L= $stmt->fetchAll();
+
+                $sql = "
+            select VO.offre_id   
+            from  voyage_organiser   VO
+             where ST_Distance(Point($dep), VO.depart ) <= $disatnce  and ST_Distance(Point($destiantion), VO.destination ) <= $disatnce ";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+                $O= $stmt->fetchAll();
+
+                $sql = "select VR.offre_id   
+            from  voyage_regulier   VR
+             where ST_Distance(Point($dep), VR.depart ) <= $disatnce and ST_Distance(Point($destiantion), VR.destination ) <= $disatnce";
+                $stmt = $conn->prepare($sql);
+                $stmt->execute();
+                $R= $stmt->fetchAll();
+
+                $result = array_merge($R , $O,$L);
+                $offres = array_column($result, 'offre_id');
+                $offres_id = array_map('intval', $offres);
+                $qb = $qb->andWhere($qb->expr()->in('p.id ','?1'))
+                    ->setParameter(1,$offres_id);
+            }
+            else{
+            $conn = $this->getEntityManager()->getConnection();
+
+            $sql ="SELECT L.offre_id FROM  location L 
+                    INNER join parcs P on  L.parcs_id  = P.id
+                    where ST_Distance(Point($dep), P.location) <= $disatnce ";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $L= $stmt->fetchAll();
+
+            $sql = "
+            select VO.offre_id   
+            from  voyage_organiser   VO
+             where ST_Distance(Point($dep), VO.depart ) <= $disatnce  and ST_Distance(Point($destiantion), VO.destination ) <= $disatnce ";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $O= $stmt->fetchAll();
+
+            $sql = "select VR.offre_id   
+            from  voyage_regulier   VR
+             where ST_Distance(Point($dep), VR.depart ) <= $disatnce and ST_Distance(Point($destiantion), VR.destination ) <= $disatnce";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $R= $stmt->fetchAll();
+
+            $result = array_merge($R , $O,$L);
+            $offres = array_column($result, 'offre_id');
+            $offres_id = array_map('intval', $offres);
+            $qb = $qb->andWhere($qb->expr()->in('p.id ','?1'))
+                ->setParameter(1,$offres_id);
+
+        }}
+
+
         /*if (!empty($date)) {
             $qb = $qb->where('VO.date <= :date')
                 ->setParameter('date', $date);

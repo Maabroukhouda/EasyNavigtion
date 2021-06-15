@@ -4,8 +4,11 @@
 
 {% block content %}
 	<div class="container">
+
+		{% if offres  %}
 		<h1 class="font-monospace text-muted ">{{offreType}}</h1>
 		<div class="row row-cols-2 row-cols-lg-4 g-2 g-lg-2 gx-2 ">
+
 			{% for offre in offres %}
 				<div class="col">
 					<div class="card  p-1">
@@ -57,5 +60,8 @@
 				</div>
 			{% endfor %}
 		</div>
+		{% else %}
+			<h1 class="font-monospace text-muted ">Aucune offre ..</h1>
+		{% endif %}
 	</div>
 {% endblock %}
