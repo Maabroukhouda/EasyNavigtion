@@ -23,10 +23,12 @@ class Calandrier
     private $date;
 
     /**
-     * @ORM\ManyToOne(targetEntity=VoyageRegulier::class, inversedBy="calandriers")
+     * @ORM\ManyToOne(targetEntity=VoyageRegulier::class, inversedBy="calandries")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $regulier;
+    private $voyageRegulier;
+
+
 
     public function getId(): ?int
     {
@@ -45,15 +47,17 @@ class Calandrier
         return $this;
     }
 
-    public function getRegulier(): ?VoyageRegulier
+    public function getVoyageRegulier(): ?VoyageRegulier
     {
-        return $this->regulier;
+        return $this->voyageRegulier;
     }
 
-    public function setRegulier(?VoyageRegulier $regulier): self
+    public function setVoyageRegulier(?VoyageRegulier $voyageRegulier): self
     {
-        $this->regulier = $regulier;
+        $this->voyageRegulier = $voyageRegulier;
 
         return $this;
     }
+
+
 }

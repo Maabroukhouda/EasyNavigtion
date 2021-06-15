@@ -5,6 +5,7 @@ namespace App\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,7 +25,8 @@ class EditRegulierType extends AbstractType
                 ['attr' => [
                     'placeholder' => "nombre de place",
                     'class' => 'form-control',]])
-            ->add('voyageRegulier' , EditOffreRegulierType::class)
+
+
             ->add('moyenneTransport' , MoyenneTransportType::class)
             ->add('Enregistrer', SubmitType::class, array(
                 'attr' => array(
@@ -36,10 +38,10 @@ class EditRegulierType extends AbstractType
     {
         return '';
     }
-    /*public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver)
        {
            $resolver->setDefaults([
                'data_class' => 'App\Entity\Offre',
            ]);
-       }*/
+       }
 }

@@ -573,7 +573,9 @@
 				Offre Voyage Regulier</h3>
 				</br>
 				<div class="form-group">
-                    git push
+					<div class="mb-3">
+						{{form_widget(formVoyageR.date)}}
+					</div>
 					<div class="mb-3">
 					<small class="text-danger">{{form_errors(formVoyageR.nbplace) }}</small>
 					{{form_widget(formVoyageR.nbplace)}}

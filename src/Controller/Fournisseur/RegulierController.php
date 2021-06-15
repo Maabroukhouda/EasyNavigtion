@@ -3,7 +3,6 @@
 namespace App\Controller\Fournisseur;
 
 use App\Entity\Calandrier;
-use App\Entity\Calendrier;
 use App\Entity\Offre;
 use App\Entity\Parcs;
 use App\Entity\VoyageRegulier;
@@ -77,7 +76,7 @@ class RegulierController extends AbstractController
         $voyage_regulier=$offre->getVoyageRegulier();
         $moy_tran = $offre->getMoyenneTransport();
         $uploads_directory = $this->getParameter('uploads_directory');
-        $form_edit_regulier = $this->createForm(EditRegulierType::class,$offre);
+        $form_edit_regulier = $this->createForm(EditOffreRegulierType::class,$voyage_regulier);
         $form_edit_regulier->handleRequest($request);
         if ($form_edit_regulier->isSubmitted() && $form_edit_regulier->isValid()) {
             $data = $form_edit_regulier->getData();
@@ -191,6 +190,7 @@ class RegulierController extends AbstractController
 
                     $data = $form_voy_regulier->getData();
 
+
                     $offreType = $this->getDoctrine()
                         ->getRepository(OffreType::class)
                         ->findOneBy(['type' => 'voyage_regulier']);
@@ -213,12 +213,16 @@ class RegulierController extends AbstractController
                     $moy_tran->setDescription($data['description']);
                     $moy_tran->setOffret($offre);
 
-                    $errors = $validator->validate($offre );
-                    if (count($errors) > 0) {
-                        return $this->render('Fournisseur/Regulier/VoyageRegulier.html.twig', [
-                            'formVoyageR' => $form_voy_regulier->createView(),
-                            'errors' => $errors,
-                        ]);
+                    $manager->persist($voy_reg);
+
+                    $dates= $data['date'];
+                    $all_date = explode(",", $dates );
+                    foreach($all_date as $i){
+                        $x =date_create_from_format("j-m-Y",$i);
+                        $calandrier = new Calandrier();
+                        $calandrier->setDate($x);
+                        $calandrier->setVoyageRegulier($voy_reg);
+                        $manager->persist($calandrier);
                     }
 
                     $manager->persist($moy_tran);
@@ -230,6 +234,7 @@ class RegulierController extends AbstractController
                     $form_voy_regulier->addError(new FormError('l\'image ne doit pas être nulle.'));
                 }
             }
+
             return $this->render('Fournisseur/Regulier/VoyageRegulier.html.twig', [
                 'formVoyageR' => $form_voy_regulier->createView(),
             ]);

@@ -75,6 +75,15 @@ class VoyageRegulierType extends AbstractType
                     ]
                 ]
             )
+            ->add('date',
+                TextType::class,
+                ['attr' => [
+                    'placeholder' => "les dates du voyage ",
+                    'class' => 'form-control date',
+
+                ]
+                ]
+            )
             ->add(
                 'description',
                 TextareaType::class,

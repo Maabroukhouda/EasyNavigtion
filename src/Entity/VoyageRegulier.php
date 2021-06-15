@@ -40,17 +40,14 @@ class VoyageRegulier
     private $offre;
 
     /**
-     * @ORM\OneToMany(targetEntity=Calandrier::class, mappedBy="regulier", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Calandrier::class, mappedBy="voyageRegulier", orphanRemoval=true)
      */
-    private $calandriers;
+    private $calandries;
 
     public function __construct()
     {
-        $this->calandriers = new ArrayCollection();
+        $this->calandries = new ArrayCollection();
     }
-
-
-
 
 
 
@@ -100,27 +97,27 @@ class VoyageRegulier
     /**
      * @return Collection|Calandrier[]
      */
-    public function getCalandriers(): Collection
+    public function getCalandries(): Collection
     {
-        return $this->calandriers;
+        return $this->calandries;
     }
 
-    public function addCalandrier(Calandrier $calandrier): self
+    public function addCalandry(Calandrier $calandry): self
     {
-        if (!$this->calandriers->contains($calandrier)) {
-            $this->calandriers[] = $calandrier;
-            $calandrier->setRegulier($this);
+        if (!$this->calandries->contains($calandry)) {
+            $this->calandries[] = $calandry;
+            $calandry->setVoyageRegulier($this);
         }
 
         return $this;
     }
 
-    public function removeCalandrier(Calandrier $calandrier): self
+    public function removeCalandry(Calandrier $calandry): self
     {
-        if ($this->calandriers->removeElement($calandrier)) {
+        if ($this->calandries->removeElement($calandry)) {
             // set the owning side to null (unless already changed)
-            if ($calandrier->getRegulier() === $this) {
-                $calandrier->setRegulier(null);
+            if ($calandry->getVoyageRegulier() === $this) {
+                $calandry->setVoyageRegulier(null);
             }
         }
 
@@ -128,7 +125,4 @@ class VoyageRegulier
     }
 
 
-
-
-
-}
+   }
