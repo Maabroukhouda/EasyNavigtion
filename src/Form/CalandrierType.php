@@ -16,19 +16,19 @@ class CalandrierType extends AbstractType
             ->add('date',
                 TextType::class,
                 ['attr' => [
+                    'id'=>'date',
                     'placeholder' => "les dates du voyage ",
                     'class' => 'form-control date',
-
                 ]
                 ]
             )
        ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+   /* public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' =>  'App\Entity\Calandrier',
         ]);
-    }
+    }*/
 }

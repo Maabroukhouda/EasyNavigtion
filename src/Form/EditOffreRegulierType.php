@@ -6,6 +6,8 @@ use App\Form\CalandrierType;
 use App\Form\moyenneTransport;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -20,7 +22,10 @@ class EditOffreRegulierType extends AbstractType
                 'attr' => ['id' => 'destination'],])
             ->add('offre' , EditRegulierType::class)
             ->add('calandries' , CalandrierType::class)
-
+            ->add('Enregistrer', SubmitType::class, array(
+                'attr' => array(
+                    'class' => 'btn btn-dark')
+            ))
         ;
     }
     public function getBlockPrefix()

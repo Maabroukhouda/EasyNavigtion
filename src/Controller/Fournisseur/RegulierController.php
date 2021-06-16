@@ -10,6 +10,7 @@ use App\Entity\User;
 
 use App\Form\EditOffreRegulierType;
 use App\Form\EditRegulierType;
+use App\Repository\CalandrierRepository;
 use CrEOF\Spatial\PHP\Types\AbstractPoint;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Security\Core\Security;
@@ -29,7 +30,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class RegulierController extends AbstractController
 {
     #[Route('/Offres/{id}/DetailsRegulier', name : 'DetailsRegulier')]
-    public function DetailsRegulier(Offre $offre, $id)
+    public function DetailsRegulier(Offre $offre, $id,CalandrierRepository $calandrier)
     {
         try {
             $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -37,21 +38,17 @@ class RegulierController extends AbstractController
             $moyenne_transport = $offre->getMoyenneTransport();
             $regulier = $offre->getVoyageRegulier();
             $contact = $offre->getUser()->getFournisseur()->getnumTel();
-            /*$events = $this->getDoctrine()->getRepository(Calendrier::class)->findBy(['voyage_regulier' => $regulier]);
+            $events =$calandrier->findBy(['voyageRegulier' => $regulier]);
             //dd($events);
             $cal =[];
             foreach ($events as $e){
                 $cal[]=[
                     'id'=>$e->getId(),
-                    'start'=>$e->getStart()->format('Y-m-d H:i:s'),
-                    'end'=>$e->getEnd()->format('Y-m-d H:i:s'),
-                    'backgroundColor' => 'red' ,
-                    'borderColor' => 'black',
-                    'textColor' =>'white'
-
+                    'start'=>$e->getDate()->format('Y-m-d'),
+                    //'color'=>'yellow',
                 ];
             }
-            $data = json_encode($cal);*/
+            $data = json_encode($cal);
 
 
             return $this->render('Fournisseur/Regulier/detailsRegulier.html.twig', [
@@ -59,7 +56,7 @@ class RegulierController extends AbstractController
                 'moyenne_tarnsport' => $moyenne_transport,
                 'regulier' => $regulier,
                 'contact' => $contact,
-               // 'data'=>$data,
+                'data'=>$data,
             ]);
         } catch (FileException $e) {
             error_log($e->getMessage());
@@ -80,7 +77,7 @@ class RegulierController extends AbstractController
         $form_edit_regulier->handleRequest($request);
         if ($form_edit_regulier->isSubmitted() && $form_edit_regulier->isValid()) {
             $data = $form_edit_regulier->getData();
-            $file = $form_edit_regulier->get('moyenneTransport')->get('image')->getData();
+            $file = $form_edit_regulier->get('offre')->get('moyenneTransport')->get('image')->getData();
             if($file != null){
                 $uploads_directory = $this->getParameter('uploads_directory');
                 $fileName = md5(uniqid()) . '.' . $file->guessExtension();
@@ -97,40 +94,54 @@ class RegulierController extends AbstractController
                 ]);
             }
 
-            $destination = $form_edit_regulier->get('voyageRegulier')->get('destination')->getData();
+            $destination = $form_edit_regulier->get('destination')->getData();
             $des = explode(" ", $destination);
-            $depart = $form_edit_regulier->get('voyageRegulier')->get('depart')->getData();
+            $depart = $form_edit_regulier->get('depart')->getData();
             $dep = explode(" ", $depart );
 
 
             $voyage_regulier->setDestination(new Point($des[0], $des[1]));
             $voyage_regulier->setDepart(new Point($dep[0], $dep[1]));
+
+            $regulier_calandries  =$this->getDoctrine()->getRepository(Calandrier::class)->findBy(['voyageRegulier' => $voyage_regulier]);
+            /*foreach($regulier_calandries as $reg_date){
+                $voyage_regulier->removeCalandry($reg_date);
+            }*/
+
+            $calandries=$form_edit_regulier->get('calandries')->get('date')->getData();
+
+            $all_date = explode(",", $calandries);
+
+            /*foreach($all_date as $i){
+                $x =date_create_from_format("j-m-Y",$i);
+                $calandrier = new Calandrier();
+                $calandrier->setDate($x);
+                $calandrier->setVoyageRegulier( $voyage_regulier);
+                $manager->persist($calandrier);
+            }*/
+
+
             $manager->persist($moy_tran);
             $manager->persist($voyage_regulier);
             $manager->persist($offre);
             $manager->flush();
             return $this->redirectToRoute('DetailsRegulier', ['id' => $id]);
         }
-        /*$events = $this->getDoctrine()->getRepository(Calendrier::class)->findBy(['voyage_regulier' => $voyage_regulier]);
-        //dd($events);
-        $cal =[];
-        foreach ($events as $e){
-            $cal[]=[
-                'id'=>$e->getId(),
-                'start'=>$e->getStart()->format('Y-m-d H:i:s'),
-                'end'=>$e->getEnd()->format('Y-m-d H:i:s'),
-                'backgroundColor' => 'red' ,
-                'borderColor' => 'black',
-                'textColor' =>'white'
 
-            ];
+        $dates  =$this->getDoctrine()->getRepository(Calandrier::class)->findBy(['voyageRegulier' => $voyage_regulier]);
+        $all_date= "";
+
+
+        foreach ($dates as $d ){
+            $all_date .= $d->getDate()->format('Y-m-d') .',';
         }
-        $data = json_encode($cal);*/
-
+        $all_date= rtrim($all_date,',');
+        //dd($all_date);
             return $this->render('Fournisseur/Regulier/editRegulier.html.twig', [
             'formRegulier' => $form_edit_regulier->createView(),
             'moyenneTransport'=>$moy_tran,
-                //'data'=>$data,
+                'dates'=>$all_date,
+
 
         ]);
     }

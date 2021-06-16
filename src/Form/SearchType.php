@@ -38,7 +38,7 @@ class SearchType extends AbstractType
                     'label' => false,
                     'empty_data' => 0,
                     'attr' => [
-                        'placeholder' => 'en kilometer',
+                        'placeholder' => 'La distance ne dépasse pas en kilometre',
                         'class' => 'form-control',
                     ]
                 ])

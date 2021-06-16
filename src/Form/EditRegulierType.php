@@ -28,10 +28,7 @@ class EditRegulierType extends AbstractType
 
 
             ->add('moyenneTransport' , MoyenneTransportType::class)
-            ->add('Enregistrer', SubmitType::class, array(
-                'attr' => array(
-                    'class' => 'btn btn-dark')
-            ));
+            ;
 
     }
     public function getBlockPrefix()

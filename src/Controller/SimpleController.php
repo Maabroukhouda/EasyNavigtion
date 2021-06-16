@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\CalandrierRepository;
 use App\Repository\OffreRepository;
 use App\Form\ParameterSimpleType;
 use App\Form\PaswordType;
@@ -21,7 +22,7 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class SimpleController extends AbstractController
 {
     #[Route('/Offre/{id}/DetailsRegulier', name: 'DetailsRegulierS')]
-    public function DetailsRegulier(Offre $offre, $id)
+    public function DetailsRegulier(Offre $offre, $id,CalandrierRepository $calandrier)
     {
         try {
             $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -30,11 +31,24 @@ class SimpleController extends AbstractController
             $regulier = $offre->getVoyageRegulier();
             $contact = $offre->getUser()->getFournisseur()->getnumTel();
 
+            $events =$calandrier->findBy(['voyageRegulier' => $regulier]);
+            //dd($events);
+            $cal =[];
+            foreach ($events as $e){
+                $cal[]=[
+                    'id'=>$e->getId(),
+                    'start'=>$e->getDate()->format('Y-m-d'),
+                    //'color'=>'yellow',
+                ];
+            }
+            $data = json_encode($cal);
             return $this->render('userSimple/detailsRegulier.html.twig', [
                 'offre' => $offre,
                 'moyenne_tarnsport' => $moyenne_transport,
                 'regulier' => $regulier,
                 'contact' => $contact,
+                'data'=>$data,
+
             ]);
         } catch (FileException $e) {
             error_log($e->getMessage());
