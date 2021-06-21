@@ -570,9 +570,10 @@
                 <div class="mb-3">{{form_widget(formRegulier.destination)}}
                 </div>
                 <div class="mb-3">
-                    <input type="hidden" id="dates" value="{{dates}}"/>
+                    {{form_widget(formRegulier.date, {'attr': {'value': dates } }) }}
 
-                    {{form_widget(formRegulier.calandries.date)}}
+
+
                 </div>
                 <div class="mb-3">
                         <small class="text-danger">{{ form_errors(formRegulier.offre.moyenneTransport.nom) }}</small>
@@ -608,7 +609,7 @@
 </div>
 <script src="js/mobiscroll.javascript.min.js"></script>
 <script>
-    dates = document.getElementById('dates').value;
+    dates = document.getElementById('date').value;
 
     $('.date').datepicker({
         multidate: true,

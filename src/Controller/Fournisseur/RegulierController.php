@@ -73,6 +73,7 @@ class RegulierController extends AbstractController
         $voyage_regulier=$offre->getVoyageRegulier();
         $moy_tran = $offre->getMoyenneTransport();
         $uploads_directory = $this->getParameter('uploads_directory');
+
         $form_edit_regulier = $this->createForm(EditOffreRegulierType::class,$voyage_regulier);
         $form_edit_regulier->handleRequest($request);
         if ($form_edit_regulier->isSubmitted() && $form_edit_regulier->isValid()) {
@@ -103,22 +104,31 @@ class RegulierController extends AbstractController
             $voyage_regulier->setDestination(new Point($des[0], $des[1]));
             $voyage_regulier->setDepart(new Point($dep[0], $dep[1]));
 
+
+
             $regulier_calandries  =$this->getDoctrine()->getRepository(Calandrier::class)->findBy(['voyageRegulier' => $voyage_regulier]);
             /*foreach($regulier_calandries as $reg_date){
                 $voyage_regulier->removeCalandry($reg_date);
             }*/
+            $voyage_regulier->clearCalanrier();
 
-            $calandries=$form_edit_regulier->get('calandries')->get('date')->getData();
+            $calandries=$form_edit_regulier->get('date')->getData();
+           //$calandries=$request->request->get('date');
+
+            //($calandries,gettype($calandries));
+
 
             $all_date = explode(",", $calandries);
+            //dd($all_date);
 
-            /*foreach($all_date as $i){
-                $x =date_create_from_format("j-m-Y",$i);
+           foreach($all_date as $i){
+                $x = date_create_from_format("j-m-Y",$i);
+
                 $calandrier = new Calandrier();
                 $calandrier->setDate($x);
-                $calandrier->setVoyageRegulier( $voyage_regulier);
+                $calandrier->setVoyageRegulier($voyage_regulier);
                 $manager->persist($calandrier);
-            }*/
+            }
 
 
             $manager->persist($moy_tran);
@@ -140,7 +150,7 @@ class RegulierController extends AbstractController
             return $this->render('Fournisseur/Regulier/editRegulier.html.twig', [
             'formRegulier' => $form_edit_regulier->createView(),
             'moyenneTransport'=>$moy_tran,
-                'dates'=>$all_date,
+            'dates'=>$all_date,
 
 
         ]);

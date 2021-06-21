@@ -2,9 +2,13 @@
 
 namespace App\Controller\Fournisseur;
 
+use App\Entity\Calandrier;
+use App\Entity\Location;
 use App\Entity\OffreType;
 use App\Entity\Parcs;
 use App\Form\ParcsType;
+use App\Repository\CalandrierRepository;
+use App\Repository\LocationRepository;
 use CrEOF\Spatial\PHP\Types\AbstractPoint;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -67,11 +71,21 @@ class ParcController extends AbstractController
     }
 
     #[Route('/Offres/Parc/{id}/delete', name: 'delete_parc')]
-    public function delete_parc(Request $request,$id,EntityManagerInterface $manager)
+    public function delete_parc(Request $request,$id,EntityManagerInterface $manager ,LocationRepository $Location)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
         $parc = $this->getDoctrine()->getRepository(Parcs::class)->find($id);
+        //$entityManager = $this->getEntityManager();
+
+        $query = $manager->createQuery(
+            'DELETE App\Entity\Offre o WHERE o.parcs = :id')
+                ->setParameter('id', $id);
+        //$locations =$Location->remove(['parcs' => $parc]);//findBy(['parcs' => $parc]);
+        //dd($locations , gettype($locations));
+
+        $query->getResult();
+
         $manager->remove($parc);
         $manager->flush();
             return $this->redirectToRoute('parc');

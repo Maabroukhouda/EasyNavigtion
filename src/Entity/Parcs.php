@@ -125,7 +125,6 @@ class Parcs
                 $offreLocation->setParcs(null);
             }
         }
-
         return $this;
     }
 }

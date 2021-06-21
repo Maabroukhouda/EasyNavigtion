@@ -43,6 +43,7 @@ class VoyageRegulier
      * @ORM\OneToMany(targetEntity=Calandrier::class, mappedBy="voyageRegulier", orphanRemoval=true)
      */
     private $calandries;
+    public  $date;
 
     public function __construct()
     {
@@ -122,6 +123,10 @@ class VoyageRegulier
         }
 
         return $this;
+    }
+    public  function  clearCalanrier(){
+        $this->calandries->clear();
+
     }
 
 

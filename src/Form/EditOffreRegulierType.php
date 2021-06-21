@@ -21,8 +21,15 @@ class EditOffreRegulierType extends AbstractType
             ->add('destination',HiddenType::class,[
                 'attr' => ['id' => 'destination'],])
             ->add('offre' , EditRegulierType::class)
-            ->add('calandries' , CalandrierType::class)
-            ->add('Enregistrer', SubmitType::class, array(
+            ->add('date',
+                TextType::class,
+                ['attr' => [
+                    'id'=>'date',
+                    'placeholder' => "les dates du voyage ",
+                    'class' => 'form-control date',
+                ]
+                ]
+            )            ->add('Enregistrer', SubmitType::class, array(
                 'attr' => array(
                     'class' => 'btn btn-dark')
             ))

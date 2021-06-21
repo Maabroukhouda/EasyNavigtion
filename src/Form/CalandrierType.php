@@ -13,8 +13,9 @@ class CalandrierType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+
             ->add('date',
-                TextType::class,
+                    TextType::class,
                 ['attr' => [
                     'id'=>'date',
                     'placeholder' => "les dates du voyage ",
@@ -22,6 +23,7 @@ class CalandrierType extends AbstractType
                 ]
                 ]
             )
+
        ;
     }
 
