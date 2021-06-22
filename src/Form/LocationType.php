@@ -23,17 +23,17 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 class LocationType extends AbstractType
 {
     private $security;
+    private $p_r;
 
-    public function __construct(Security $security)
+    public function __construct(Security $security , ParcsRepository  $er)
     {
         $this->security = $security;
+        $this->p_r = $er;
+
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options )
     {
-
-
-
         $builder
             ->add(
                 'prix',
@@ -100,13 +100,7 @@ class LocationType extends AbstractType
             ])
             ->add('parcs', EntityType::class, [
             'class' =>Parcs::class,
-            'query_builder' => function (ParcsRepository  $er) {
-                return $er->createQueryBuilder('p')
-                          ->where( 'p.user = :user' )
-                        ->setParameter('user' , $this->security->getUser());
-                   // ->findBy(['p.user' => $this->security->getUser() ]);
-            },
-            // uses the User.username property as the visible option string
+            'query_builder'=>$this->parc_User(),
             'choice_label'  => function ($U_parcs,$nb) {
                     //$nb=$parcs->count($parcs);
                     for ($i =0 ; $i<= $nb ; $i++) {
@@ -115,15 +109,23 @@ class LocationType extends AbstractType
                     return  $x;
                           },
            'attr' => [
+
                'label' => false,
                'class' => 'form-select',
                'expanded' => false,
                'multiple' => false
            ]
         ]);
+
+    }
+    public function parc_User () {
+        return $this->p_r->createQueryBuilder('p')
+            ->where( 'p.user = :user' )
+            ->setParameter('user' , $this->security->getUser());
     }
     public function getBlockPrefix()
     {
+
         return '';
     }
     /*public function configureOptions(OptionsResolver $resolver)

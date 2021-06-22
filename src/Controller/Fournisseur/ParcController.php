@@ -4,6 +4,7 @@ namespace App\Controller\Fournisseur;
 
 use App\Entity\Calandrier;
 use App\Entity\Location;
+use App\Entity\Offre;
 use App\Entity\OffreType;
 use App\Entity\Parcs;
 use App\Form\ParcsType;
@@ -71,20 +72,32 @@ class ParcController extends AbstractController
     }
 
     #[Route('/Offres/Parc/{id}/delete', name: 'delete_parc')]
-    public function delete_parc(Request $request,$id,EntityManagerInterface $manager ,LocationRepository $Location)
+    public function delete_parc(Request $request,$id,EntityManagerInterface $manager ,LocationRepository $Lo)
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $user = $this->getUser();
         $parc = $this->getDoctrine()->getRepository(Parcs::class)->find($id);
-        //$entityManager = $this->getEntityManager();
+        $locations = $Lo->findBy(['parcs' =>$parc]);
+        foreach( $locations as $l){
+            $offre =$l->getOffre();
+            $moy=$offre->getMoyenneTransport();
+            $manager->remove($l);
+            $manager->remove($moy);
+            $manager->remove($offre);
+        }
+
+        /*$entityManager = $this->getEntityManager();
 
         $query = $manager->createQuery(
-            'DELETE App\Entity\Offre o WHERE o.parcs = :id')
+            'DELETE App\Entity\Location o WHERE o.parcs = :id')
                 ->setParameter('id', $id);
+        $del_offre=$manager->createQuery(
+          'DELETE '
+        );
         //$locations =$Location->remove(['parcs' => $parc]);//findBy(['parcs' => $parc]);
         //dd($locations , gettype($locations));
 
-        $query->getResult();
+        $query->getResult();*/
 
         $manager->remove($parc);
         $manager->flush();

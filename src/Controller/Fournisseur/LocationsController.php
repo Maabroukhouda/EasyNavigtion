@@ -106,7 +106,6 @@ class LocationsController extends AbstractController
         $moy_tran = $offre->getMoyenneTransport();
         $manager->remove($location);
         $manager->remove($moy_tran);
-
         $manager->remove($offre);
         $manager->flush();
         return $this->redirectToRoute('offre' );
